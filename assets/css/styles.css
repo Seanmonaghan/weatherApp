@@ -13,6 +13,7 @@ header h1 {
 
 body {
     background-color: gray;
+    font-family: 'Oswald', sans-serif;
 }
 
 #citySelector {
