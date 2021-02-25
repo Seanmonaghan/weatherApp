@@ -1,0 +1,16 @@
+/* font-family: 'Open Sans', sans-serif;
+font-family: 'Oswald', sans-serif; */
+
+header h1 {
+    background-color: lightslategray;
+    color: white;
+    text-align: center;
+    font-size: 50px;
+    padding: 20px;
+    font-family: 'Oswald', sans-serif;
+    margin-top: 0;
+}
+
+body {
+    background-color: gray;
+}
