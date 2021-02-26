@@ -23,3 +23,12 @@ body {
 #weatherDisplay {
     background-color: tan;
 }
+
+.card {
+    background-color: tan;
+    border-width: 0;
+}
+
+p {
+    font-family: 'Open Sans', sans-serif;
+}
