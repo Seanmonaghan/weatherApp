@@ -27,8 +27,17 @@ body {
 .card {
     background-color: tan;
     border-width: 0;
+    margin: 10px;
 }
 
 p {
     font-family: 'Open Sans', sans-serif;
+}
+
+li {
+    display: block;
+}
+
+.container {
+    justify-content: space-between;
 }
