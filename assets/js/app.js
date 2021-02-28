@@ -5,7 +5,7 @@ const searchButton = document.getElementById('search-button');
 const searchInput = document.getElementById('search-input');
 
 const cityInformation = $("#cityInformation");
-const previousSearchedCitiesList = $("#previousSearchedCitiesList")
+
 const card = $(".card");
 const fiveDayCard = $(".fiveDayCard");
 
@@ -17,6 +17,7 @@ const currentHumidity = $("#currentHumidity");
 const currentWindSpeed = $("#currentWindSpeed");
 const currentUVIndex = $("#currentUVIndex");
 const currentTime = $("#currentTime");
+const currentWeatherIcon = $("#currentWeatherIcon")
 
 
 // Five Day Forecast Header Spans
@@ -47,6 +48,9 @@ const secondDayHumidity = $("#secondDayHumidity")
 const thirdDayHumidity = $("#thirdDayHumidity")
 const fourthDayHumidity = $("#fourthDayHumidity")
 const fifthDayHumidity = $("#fifthDayHumidity")
+
+// List Item Variables
+const previousSearchedCitiesList = $("#previousSearchedCitiesList")
 
 
 function getCurrentWeather(location) {
@@ -84,10 +88,11 @@ function fiveDayForecast(lat, lon) {
         })
         .then(function (data) {
             console.log(data);
-            fiveDayCard.css("background-color", "gray");
+            fiveDayCard.css("background-color", "#97BADE");
             fiveDayCard.css("color", "white");
             fiveDayCard.css("border-radius", "15px")
             currentUVIndex.text("The current UVI is " + data.current.uvi);
+            currentWeatherIcon.html("<div id='icon'><img id='wicon' src='http://openweathermap.org/img/w/" + data.daily[0].weather[0].icon + ".png' alt='Weather icon'></div>")
             //Setting Dates Based on Timezone Selected 
             var local = DateTime.local();
             var reZoned = local.setZone(data.timezone);
@@ -127,10 +132,36 @@ function fiveDayForecast(lat, lon) {
             fourthDayHumidity.text("Humidity: " + data.daily[4].humidity + "%");
             fifthDayHumidity.text("Humidity: " + data.daily[5].humidity + "%");
             
-        });
+            
+        } );
 };
+
+
+
+// Generates Searched Cities as List Items
+function generateListItem(location) {
+    searchedCitiesArray = []
+    searchedCitiesArray.push(location);
+    
+    for (i = 0; i < searchedCitiesArray.length; i++) {
+        var listItem = document.createElement("li");
+        listItem.textContent = searchedCitiesArray[i];
+        listItem.classList.add('listItems');
+        previousSearchedCitiesList.prepend(listItem);
+    }
+
+    $( ".listItems" ).on( "click", function() {
+        let location = this.textContent;
+        getCurrentWeather(location);
+      });
+} 
 
 searchButton.addEventListener('click', () => {
     const inputValue = searchInput.value;
+    generateListItem(inputValue);
     getCurrentWeather(inputValue);
 });
+
+
+
+

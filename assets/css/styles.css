@@ -20,8 +20,14 @@ body {
     padding: 20px;
 }
 
+#searchHeader {
+    color: white;
+    text-anchor: middle;
+}
+
 #weatherDisplay {
     background-color: gray;
+    
 }
 
 .card {
@@ -36,4 +42,18 @@ p {
 
 li {
     display: block;
+    margin: 10px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-transform: capitalize;
+}
+
+.list-group {
+    background-color: gray;
+}
+
+.card-subtitle {
+    margin-top: -1.5rem;
+    margin-bottom: 50px;
 }
