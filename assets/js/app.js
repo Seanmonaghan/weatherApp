@@ -1,28 +1,47 @@
 var DateTime = luxon.DateTime;
 
+// Search Button Elements
 const searchButton = document.getElementById('search-button');
 const searchInput = document.getElementById('search-input');
+
 const cityInformation = $("#cityInformation");
 const previousSearchedCitiesList = $("#previousSearchedCitiesList")
+const card = $(".card");
 
 
-
-// spans
+// Current Day Weather Display Elements
 const cityInformationTag = $("#cityInformationTag");
 const currentTemperature = $("#currentTemperature");
 const currentHumidity = $("#currentHumidity");
-const currentWindSpeed = $("#currentWindSpeed")
-const currentUVIndex = $("#currentUVIndex")
-const card = $(".card");
+const currentWindSpeed = $("#currentWindSpeed");
+const currentUVIndex = $("#currentUVIndex");
+const currentTime = $("#currentTime");
 
-const fiveDayForecastSpan = $("#fiveDayForecastSpan")
-const firstDayForecastSpan = $("#firstDayForecastSpan")
-const secondDayForecastSpan = $("#secondDayForecastSpan")
-const thirdDayForecastSpan = $("#thirdDayForecastSpan")
-const fourthDayForecastSpan = $("#fourthDayForecastSpan")
-const fifthDayForecastSpan = $("#fifthDayForecastSpan")
 
-function getApi(location) {
+// Five Day Forecast Header Elements
+const fiveDayForecastSpan = $("#fiveDayForecastSpan");
+const firstDayForecastSpan = $("#firstDayForecastSpan");
+const secondDayForecastSpan = $("#secondDayForecastSpan");
+const thirdDayForecastSpan = $("#thirdDayForecastSpan");
+const fourthDayForecastSpan = $("#fourthDayForecastSpan");
+const fifthDayForecastSpan = $("#fifthDayForecastSpan");
+
+// Icon Elements
+const firstDayIcon = $("#firstDayIcon");
+const secondDayIcon = $("#secondDayIcon");
+const thirdDayIcon = $("#thirdDayIcon");
+const fourthDayIcon = $("#fourthDayIcon");
+const fifthDayIcon = $("#fifthDayIcon");
+
+// 5 Day Temp
+const firstDayTemp = $("#firstDayTemp");
+const secondDayTemp = $("#secondDayTemp");
+const thirdDayTemp = $("#thirdDayTemp");
+const fourthDayTemp = $("#fourthDayTemp");
+const fifthDayTemp = $("#fifthDayTemp");
+
+
+function getCurrentWeather(location) {
     var requestUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + location + '&units=imperial&appid=5d292a57cafb0a0a0714cf2da71abf3d';
 
     fetch(requestUrl)
@@ -58,13 +77,17 @@ function fiveDayForecast(lat, lon) {
         .then(function (data) {
             console.log(data);
             
+            //Setting Dates Based on Timezone Selected 
             var local = DateTime.local();
             var reZoned = local.setZone(data.timezone);
-            var shortReZoned = reZoned.toLocaleString();
-            var day2 = reZoned.plus({days:1}).toLocaleString();
-            var day3 = reZoned.plus({days:2}).toLocaleString();
-            var day4 = reZoned.plus({days:3}).toLocaleString();
-            var day5 = reZoned.plus({days:4}).toLocaleString();
+            console.log(reZoned.toLocaleString(DateTime.DATETIME_FULL));
+            currentTime.text(reZoned.toLocaleString(DateTime.DATETIME_FULL));
+
+            var day1 = reZoned.plus({days:1}).toLocaleString();
+            var day2 = reZoned.plus({days:2}).toLocaleString();
+            var day3 = reZoned.plus({days:3}).toLocaleString();
+            var day4 = reZoned.plus({days:4}).toLocaleString();
+            var day5 = reZoned.plus({days:5}).toLocaleString();
 
 
             
@@ -75,7 +98,7 @@ function fiveDayForecast(lat, lon) {
             // DO THIS NEXT
             fiveDayForecastSpan.text("Five Day Forecast");
             
-            firstDayForecastSpan.text(shortReZoned);
+            firstDayForecastSpan.text(day1);
             secondDayForecastSpan.text(day2);
             thirdDayForecastSpan.text(day3);
             fourthDayForecastSpan.text(day4);
@@ -84,9 +107,7 @@ function fiveDayForecast(lat, lon) {
         });
 };
 
-
-
 searchButton.addEventListener('click', () => {
     const inputValue = searchInput.value;
-    getApi(inputValue);
+    getCurrentWeather(inputValue);
 });
