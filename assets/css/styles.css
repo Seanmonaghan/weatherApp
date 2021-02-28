@@ -6,7 +6,7 @@ header h1 {
     color: white;
     text-align: center;
     font-size: 50px;
-    padding: 20px;
+    padding: 30px;
     font-family: 'Oswald', sans-serif;
     margin-top: 0;
 }
@@ -17,15 +17,15 @@ body {
 }
 
 #citySelector {
-    background-color: silver;
+    padding: 20px;
 }
 
 #weatherDisplay {
-    background-color: tan;
+    background-color: gray;
 }
 
 .card {
-    background-color: tan;
+    background-color: gray;
     border-width: 0;
     margin: 10px;
 }
@@ -36,8 +36,4 @@ p {
 
 li {
     display: block;
-}
-
-.container {
-    justify-content: space-between;
 }
