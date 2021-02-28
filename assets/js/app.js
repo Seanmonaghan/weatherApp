@@ -7,6 +7,7 @@ const searchInput = document.getElementById('search-input');
 const cityInformation = $("#cityInformation");
 const previousSearchedCitiesList = $("#previousSearchedCitiesList")
 const card = $(".card");
+const fiveDayCard = $(".fiveDayCard");
 
 
 // Current Day Weather Display Elements
@@ -18,7 +19,7 @@ const currentUVIndex = $("#currentUVIndex");
 const currentTime = $("#currentTime");
 
 
-// Five Day Forecast Header Elements
+// Five Day Forecast Header Spans
 const fiveDayForecastSpan = $("#fiveDayForecastSpan");
 const firstDayForecastSpan = $("#firstDayForecastSpan");
 const secondDayForecastSpan = $("#secondDayForecastSpan");
@@ -26,19 +27,26 @@ const thirdDayForecastSpan = $("#thirdDayForecastSpan");
 const fourthDayForecastSpan = $("#fourthDayForecastSpan");
 const fifthDayForecastSpan = $("#fifthDayForecastSpan");
 
-// Icon Elements
+// Icon Spans
 const firstDayIcon = $("#firstDayIcon");
 const secondDayIcon = $("#secondDayIcon");
 const thirdDayIcon = $("#thirdDayIcon");
 const fourthDayIcon = $("#fourthDayIcon");
 const fifthDayIcon = $("#fifthDayIcon");
 
-// 5 Day Temp
+// 5 Day Temp Spans
 const firstDayTemp = $("#firstDayTemp");
 const secondDayTemp = $("#secondDayTemp");
 const thirdDayTemp = $("#thirdDayTemp");
 const fourthDayTemp = $("#fourthDayTemp");
 const fifthDayTemp = $("#fifthDayTemp");
+
+// 5 Day Humidity Spans
+const firstDayHumidity = $("#firstDayHumidity")
+const secondDayHumidity = $("#secondDayHumidity")
+const thirdDayHumidity = $("#thirdDayHumidity")
+const fourthDayHumidity = $("#fourthDayHumidity")
+const fifthDayHumidity = $("#fifthDayHumidity")
 
 
 function getCurrentWeather(location) {
@@ -76,33 +84,48 @@ function fiveDayForecast(lat, lon) {
         })
         .then(function (data) {
             console.log(data);
-            
+            fiveDayCard.css("background-color", "gray");
+            fiveDayCard.css("color", "white");
+            fiveDayCard.css("border-radius", "15px")
+            currentUVIndex.text("The current UVI is " + data.current.uvi);
             //Setting Dates Based on Timezone Selected 
             var local = DateTime.local();
             var reZoned = local.setZone(data.timezone);
-            console.log(reZoned.toLocaleString(DateTime.DATETIME_FULL));
             currentTime.text(reZoned.toLocaleString(DateTime.DATETIME_FULL));
-
+            // Set reZoned days for the 5 day forecast
             var day1 = reZoned.plus({days:1}).toLocaleString();
             var day2 = reZoned.plus({days:2}).toLocaleString();
             var day3 = reZoned.plus({days:3}).toLocaleString();
             var day4 = reZoned.plus({days:4}).toLocaleString();
             var day5 = reZoned.plus({days:5}).toLocaleString();
 
-
-            
-            currentUVIndex.text("The current UVI is " + data.current.uvi);
-
-
-
-            // DO THIS NEXT
+            // Set Headings for each day as the local date
             fiveDayForecastSpan.text("Five Day Forecast");
-            
             firstDayForecastSpan.text(day1);
             secondDayForecastSpan.text(day2);
             thirdDayForecastSpan.text(day3);
             fourthDayForecastSpan.text(day4);
             fifthDayForecastSpan.text(day5);
+
+            // set Icon Spans
+            firstDayIcon.html("<div id='icon'><img id='wicon' src='http://openweathermap.org/img/w/" + data.daily[1].weather[0].icon + ".png' alt='Weather icon'></div>");
+            secondDayIcon.html("<div id='icon'><img id='wicon' src='http://openweathermap.org/img/w/" + data.daily[2].weather[0].icon + ".png' alt='Weather icon'></div>");
+            thirdDayIcon.html("<div id='icon'><img id='wicon' src='http://openweathermap.org/img/w/" + data.daily[3].weather[0].icon + ".png' alt='Weather icon'></div>");
+            fourthDayIcon.html("<div id='icon'><img id='wicon' src='http://openweathermap.org/img/w/" + data.daily[4].weather[0].icon + ".png' alt='Weather icon'></div>");
+            fifthDayIcon.html("<div id='icon'><img id='wicon' src='http://openweathermap.org/img/w/" + data.daily[5].weather[0].icon + ".png' alt='Weather icon'></div>");
+            // set Daily Temp
+            firstDayTemp.text("Temp: " + data.daily[1].temp.day + "°F");
+            secondDayTemp.text("Temp: " + data.daily[2].temp.day + "°F");
+            thirdDayTemp.text("Temp: " + data.daily[3].temp.day + "°F");
+            fourthDayTemp.text("Temp: " + data.daily[4].temp.day + "°F");
+            fifthDayTemp.text("Temp: " + data.daily[5].temp.day + "°F");
+
+            // set Daily Humidity
+            firstDayHumidity.text("Humidity: " + data.daily[1].humidity + "%");
+            secondDayHumidity.text("Humidity: " + data.daily[2].humidity + "%");
+            thirdDayHumidity.text("Humidity: " + data.daily[3].humidity + "%");
+            fourthDayHumidity.text("Humidity: " + data.daily[4].humidity + "%");
+            fifthDayHumidity.text("Humidity: " + data.daily[5].humidity + "%");
             
         });
 };
