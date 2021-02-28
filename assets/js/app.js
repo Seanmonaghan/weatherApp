@@ -17,6 +17,7 @@ const currentHumidity = $("#currentHumidity");
 const currentWindSpeed = $("#currentWindSpeed");
 const currentUVIndex = $("#currentUVIndex");
 const currentTime = $("#currentTime");
+const currentUVIndexText = $("#currentUVIndexText")
 const currentWeatherIcon = $("#currentWeatherIcon")
 
 
@@ -68,9 +69,9 @@ function getCurrentWeather(location) {
             card.css("background-color", "white");
             card.css("border", "1px solid rgba(0,0,0,.125);")
             cityInformationTag.text("Current Weather for " + data.name + ", " +data.sys.country);
-            currentTemperature.text("The current temperature is " + data.main.temp + "°F");
-            currentHumidity.text("The current level of humidity is " + data.main.humidity + "%");
-            currentWindSpeed.text("The current wind speed is " + data.wind.speed + " MPH");
+            currentTemperature.text("Temperature: " + data.main.temp + "°F");
+            currentHumidity.text("Humidity: " + data.main.humidity + "%");
+            currentWindSpeed.text("Wind Speed: " + data.wind.speed + " MPH");
 
             var lat = data.coord.lat
             var lon = data.coord.lon
@@ -91,7 +92,15 @@ function fiveDayForecast(lat, lon) {
             fiveDayCard.css("background-color", "#97BADE");
             fiveDayCard.css("color", "white");
             fiveDayCard.css("border-radius", "15px")
-            currentUVIndex.text("The current UVI is " + data.current.uvi);
+            currentUVIndexText.text("Current UV Index: ");
+            currentUVIndex.text(data.current.uvi);
+            if (data.current.uvi < 3) {
+                currentUVIndex.css('background-color', 'rgb(151, 186, 222)');
+            } else if (data.current.uvi >= 3 && data.current.uvi < 7) {
+                currentUVIndex.css('background-color', 'silver');
+            } else {
+                currentUVIndex.css('background-color', '#ec4646');
+            }
             currentWeatherIcon.html("<div id='icon'><img id='wicon' src='http://openweathermap.org/img/w/" + data.daily[0].weather[0].icon + ".png' alt='Weather icon'></div>")
             //Setting Dates Based on Timezone Selected 
             var local = DateTime.local();
