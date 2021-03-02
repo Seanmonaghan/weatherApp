@@ -3,16 +3,9 @@ var DateTime = luxon.DateTime;
 // Search Button Elements
 const searchButton = document.getElementById('search-button');
 const searchInput = document.getElementById('search-input');
-
 const cityInformation = $("#cityInformation");
-
 const card = $(".card");
 const fiveDayCard = $(".fiveDayCard");
-
-let savedListItems = JSON.parse(localStorage.getItem('savedListItem'));
-console.log(savedListItems);
-
-
 
 // Current Day Weather Display Elements
 const cityInformationTag = $("#cityInformationTag");
@@ -21,9 +14,8 @@ const currentHumidity = $("#currentHumidity");
 const currentWindSpeed = $("#currentWindSpeed");
 const currentUVIndex = $("#currentUVIndex");
 const currentTime = $("#currentTime");
-const currentUVIndexText = $("#currentUVIndexText")
-const currentWeatherIcon = $("#currentWeatherIcon")
-
+const currentUVIndexText = $("#currentUVIndexText");
+const currentWeatherIcon = $("#currentWeatherIcon");
 
 // Five Day Forecast Header Spans
 const fiveDayForecastSpan = $("#fiveDayForecastSpan");
@@ -48,16 +40,30 @@ const fourthDayTemp = $("#fourthDayTemp");
 const fifthDayTemp = $("#fifthDayTemp");
 
 // 5 Day Humidity Spans
-const firstDayHumidity = $("#firstDayHumidity")
-const secondDayHumidity = $("#secondDayHumidity")
-const thirdDayHumidity = $("#thirdDayHumidity")
-const fourthDayHumidity = $("#fourthDayHumidity")
-const fifthDayHumidity = $("#fifthDayHumidity")
+const firstDayHumidity = $("#firstDayHumidity");
+const secondDayHumidity = $("#secondDayHumidity");
+const thirdDayHumidity = $("#thirdDayHumidity");
+const fourthDayHumidity = $("#fourthDayHumidity");
+const fifthDayHumidity = $("#fifthDayHumidity");
 
 // List Item Variables
-const previousSearchedCitiesList = $("#previousSearchedCitiesList")
+const previousSearchedCitiesList = $("#previousSearchedCitiesList");
 
+// Saves searched cities into local storage
+function save(new_data) {
+    if (localStorage.getItem('data') == null) {
+        localStorage.setItem('data', '[]');
+    }
+    var old_data = JSON.parse(localStorage.getItem('data'));
+    old_data.push(new_data)
+    localStorage.setItem('data', JSON.stringify(old_data));
+}
 
+// Runs the display saved items function to render previously searched cities
+displaySavedItems();
+
+// Dynamically renders the current forecast information and
+// the CSS to make it appear on the screen.
 function getCurrentWeather(location) {
     var requestUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + location + '&units=imperial&appid=5d292a57cafb0a0a0714cf2da71abf3d';
 
@@ -84,6 +90,8 @@ function getCurrentWeather(location) {
 
 };
 
+// Dynamically renders the five day forecast information and
+// the CSS to make it appear on the screen.
 function fiveDayForecast(lat, lon) {
     var requestUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=5d292a57cafb0a0a0714cf2da71abf3d';
 
@@ -154,61 +162,56 @@ function fiveDayForecast(lat, lon) {
             thirdDayHumidity.text("Humidity: " + data.daily[3].humidity + "%");
             fourthDayHumidity.text("Humidity: " + data.daily[4].humidity + "%");
             fifthDayHumidity.text("Humidity: " + data.daily[5].humidity + "%");
-
-
         });
 };
 
-
-
-// Generates Searched Cities as List Items
+// Saves search value as location and saves that to local storage
+// and displays list items so long as the value is not empty.  
 function generateListItem(location) {
-    searchedCitiesArray = []
-    searchedCitiesArray.push(location);
-    localStorage.setItem('savedListItems', JSON.stringify(searchedCitiesArray));
-    console.log(savedListItems);
     if (location != "") {
-        for (i = 0; i < searchedCitiesArray.length; i++) {
-            var listItem = document.createElement("li");
-            listItem.textContent = searchedCitiesArray[i];
-            listItem.classList.add('listItems');
-            previousSearchedCitiesList.prepend(listItem);
-        }
-
-        $(".listItems").on("click", function () {
-            let location = this.textContent;
-            getCurrentWeather(location);
-        });
+        save(location);
+        displaySavedItems(); 
     }
-
 }
 
+// Display All Saved List Items as list items and makes them responsive
+// to being clicked.
+function displaySavedItems() {
+    var items = JSON.parse(localStorage.getItem('data'));
+    
+    console.log(items);
+    if (items == null) {
+        console.log("early exit");
+        return;
+    }
+    console.log("cont");
+    $("#previousSearchedCitiesList").empty();
+    for (i = 0; i < items.length; i++) {
+        var listItem = document.createElement("li");
+        listItem.textContent = items[i];
+        listItem.classList.add('listItems');
+        previousSearchedCitiesList.prepend(listItem);
+    }
+
+    $(".listItems").on("click", function () {
+        let location = this.textContent;
+        getCurrentWeather(location);
+    });
+}
+
+// Search Button Code
 searchButton.addEventListener('click', () => {
     const inputValue = searchInput.value;
-    console.log(inputValue)
     if (inputValue != '') {
         generateListItem(inputValue);
         getCurrentWeather(inputValue);
-        searchInput.value = ''
-    } 
+        searchInput.value = '';
+    }
 });
 
-searchInput.addEventListener('keyup', function(event) {
+// Activates the search button with the enter key if you're in the SearchInput.
+searchInput.addEventListener('keyup', function (event) {
     if (event.key === 'Enter') {
         searchButton.click();
-    } 
+    }
 })
-
-
-function generatePreviouslySavedListItems(items) {
-    
-        for (i = 0; i < items.length; i++) {
-            var listItem = document.createElement("li");
-            listItem.textContent = items[i];
-            listItem.classList.add('listItems');
-            previousSearchedCitiesList.prepend(listItem);
-        }
-}
-// if (savedListItems != null) {
-//     generatePreviouslySavedListItems(savedListItems);
-// }
