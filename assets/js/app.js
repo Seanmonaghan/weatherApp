@@ -166,6 +166,7 @@ function generateListItem(location) {
     searchedCitiesArray = []
     searchedCitiesArray.push(location);
     localStorage.setItem('savedListItems', JSON.stringify(searchedCitiesArray));
+    console.log(savedListItems);
     if (location != "") {
         for (i = 0; i < searchedCitiesArray.length; i++) {
             var listItem = document.createElement("li");
@@ -188,8 +189,16 @@ searchButton.addEventListener('click', () => {
     if (inputValue != '') {
         generateListItem(inputValue);
         getCurrentWeather(inputValue);
+        searchInput.value = ''
     } 
 });
+
+searchInput.addEventListener('keyup', function(event) {
+    if (event.key === 'Enter') {
+        searchButton.click();
+    } 
+})
+
 
 function generatePreviouslySavedListItems(items) {
     
