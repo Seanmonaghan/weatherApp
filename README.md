@@ -1,5 +1,7 @@
 # Weather Dashboard
 
+https://seanmonaghan.github.io/weatherApp/
+
 ## Description
 
 This app utilizes third party APIs to gather information regarding the weather and date to provide the user a weather dashboard that they can see the current weather and a five day forecast, while also having their search queries saved in a list for easy access.  The app utilizes jQuery to dynamically update the HTML and CSS based on the city selection of the user.
@@ -9,82 +11,67 @@ The weather data obtained by this app comes from OpenWeather Api and the date in
 ## Ideal User
 
 ```
-AS A traveler
-I WANT to see the weather outlook for multiple cities
-SO THAT I can plan a trip accordingly
+This application is aimed at a user who will be doing 
+some traveling and wants to see the weather outlook for multiple cities
+so that they can plan their trip accordingly.  
 ```
 
-## Acceptance Criteria
+## Site Overview
+
+![Overall Image](assets/images/overall.PNG)
 
 ```
-GIVEN a weather dashboard with form inputs
-WHEN I search for a city
-THEN I am presented with current and future conditions for that city and that city is added to the search history
-WHEN I view current weather conditions for that city
-THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, the wind speed, and the UV index
-WHEN I view the UV index
-THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe
-WHEN I view future weather conditions for that city
-THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity
-WHEN I click on a city in the search history
-THEN I am again presented with current and future conditions for that city
+The user is initially presented with a search bar prompting them to enter the name
+of a city, with a heading informing them that this is a Weather Dashboard.  The page
+is bare other than this to direct the users attention to the search bar and make the 
+process more intuitive.  
 ```
 
-## Mock-Up
+![Initial Loadup Image](assets/images/initial.PNG)
 
-The following image shows the web application's appearance and functionality:
+```
 
-![The weather app includes a search option, a list of cities, and a five-day forecast and current weather conditions for Atlanta.](./Assets/06-server-side-apis-homework-demo.png)
+When the user enters a city into the search bar and either presses the search button or
+hits the enter key, two sections will be filled with information regarding the weather
+conditions, as shown in the first image. If the city is able to be fetched by the API call,
+it will alert the user with a message informing them as such.  
 
-## Grading Requirements
+```
 
-This homework is graded based on the following criteria: 
+![Search Bar](assets/images/searchButtonCode.PNG)
 
-### Technical Acceptance Criteria: 40%
 
-* Satisfies all of the above acceptance criteria plus the following:
+```
+The weather conditions that are relayed to the user include temperature, humidity, wind speed
+and the UV Index both currently and a five day forecast.  The UV Index is colored blue, grey,
+or red to distinguish the danger level.  0-3 is blue to denote favorable, 3-7 gray to denote moderate
+and above that it will show red to denote severe.  A weather icon is also present to give an overall
+representation of the weather conditions.
 
-    * Uses the OpenWeather API to retrieve weather data.
+```
 
-    * Uses `localStorage` to store persistent data.
+![getWeatherFunction](assets/images/getCurrentWeather.PNG)
+![getFiveDayForecast](assets/images/getFiveDayForecast.PNG)
+![setFiveDayForecast](assets/images/setFiveDayForecast.PNG)
 
-### Deployment: 32%
+```
 
-* Application deployed at live URL.
+To ensure that the times and dates provided are accurate to the region searched, Luxon.js is 
+used to ascertain the timezone and make the calculations accordingly.  
 
-* Application loads with no errors.
+```
 
-* Application GitHub URL submitted.
+![Timezones](assets/images/timezone.PNG)
 
-* GitHub repository that contains application code.
+```
+In addition to displaying the weather, searching for a city will also generate a list item that is
+displayed below the search bar.  These list items are saved into local storage so they will persist and 
+be regenerated when the user returns to the site using the load function.  These list items will also execute the getWeather function
+upon being clicked to bring up the weather information for that city.
 
-### Application Quality: 15%
+```
 
-* Application user experience is intuitive and easy to navigate.
+![save function](assets/images/save.PNG)
+![Generate List Items](assets/images/generateListItems.PNG)
+![load function](assets/images/displayListItems.PNG)
 
-* Application user interface style is clean and polished.
-
-* Application resembles the mock-up functionality provided in the homework instructions.
-
-### Repository Quality: 13%
-
-* Repository has a unique name.
-
-* Repository follows best practices for file structure and naming conventions.
-
-* Repository follows best practices for class/id naming conventions, indentation, quality comments, etc.
-
-* Repository contains multiple descriptive commit messages.
-
-* Repository contains quality readme file with description, screenshot, and link to deployed application.
-
-## Review
-
-You are required to submit BOTH of the following for review:
-
-* The URL of the functional, deployed application.
-
-* The URL of the GitHub repository. Give the repository a unique name and include a readme describing the project.
-
-- - -
-© 2021 Trilogy Education Services, LLC, a 2U, Inc. brand. Confidential and Proprietary. All Rights Reserved.

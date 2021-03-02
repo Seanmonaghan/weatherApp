@@ -53,6 +53,10 @@ li {
     text-transform: capitalize;
 }
 
+li:hover{
+    cursor: pointer;
+}
+
 .list-group {
     background-color: gray;
 }
