@@ -9,6 +9,10 @@ const cityInformation = $("#cityInformation");
 const card = $(".card");
 const fiveDayCard = $(".fiveDayCard");
 
+let savedListItems = JSON.parse(localStorage.getItem('savedListItem'));
+console.log(savedListItems);
+
+
 
 // Current Day Weather Display Elements
 const cityInformationTag = $("#cityInformationTag");
@@ -61,14 +65,14 @@ function getCurrentWeather(location) {
         .then(function (response) {
             if (response.status !== 200) {
                 alert("city not found - please try again!");
-              }
+            }
             return response.json();
         })
         .then(function (data) {
-            
+
             card.css("background-color", "white");
             card.css("border", "1px solid rgba(0,0,0,.125);")
-            cityInformationTag.text("Current Weather for " + data.name + ", " +data.sys.country);
+            cityInformationTag.text("Current Weather for " + data.name + ", " + data.sys.country);
             currentTemperature.text("Temperature: " + data.main.temp + "°F");
             currentHumidity.text("Humidity: " + data.main.humidity + "%");
             currentWindSpeed.text("Wind Speed: " + data.wind.speed + " MPH");
@@ -77,7 +81,7 @@ function getCurrentWeather(location) {
             var lon = data.coord.lon
             fiveDayForecast(lat, lon);
         });
-    
+
 };
 
 function fiveDayForecast(lat, lon) {
@@ -107,11 +111,21 @@ function fiveDayForecast(lat, lon) {
             var reZoned = local.setZone(data.timezone);
             currentTime.text(reZoned.toLocaleString(DateTime.DATETIME_FULL));
             // Set reZoned days for the 5 day forecast
-            var day1 = reZoned.plus({days:1}).toLocaleString();
-            var day2 = reZoned.plus({days:2}).toLocaleString();
-            var day3 = reZoned.plus({days:3}).toLocaleString();
-            var day4 = reZoned.plus({days:4}).toLocaleString();
-            var day5 = reZoned.plus({days:5}).toLocaleString();
+            var day1 = reZoned.plus({
+                days: 1
+            }).toLocaleString();
+            var day2 = reZoned.plus({
+                days: 2
+            }).toLocaleString();
+            var day3 = reZoned.plus({
+                days: 3
+            }).toLocaleString();
+            var day4 = reZoned.plus({
+                days: 4
+            }).toLocaleString();
+            var day5 = reZoned.plus({
+                days: 5
+            }).toLocaleString();
 
             // Set Headings for each day as the local date
             fiveDayForecastSpan.text("Five Day Forecast");
@@ -140,9 +154,9 @@ function fiveDayForecast(lat, lon) {
             thirdDayHumidity.text("Humidity: " + data.daily[3].humidity + "%");
             fourthDayHumidity.text("Humidity: " + data.daily[4].humidity + "%");
             fifthDayHumidity.text("Humidity: " + data.daily[5].humidity + "%");
-            
-            
-        } );
+
+
+        });
 };
 
 
@@ -151,26 +165,41 @@ function fiveDayForecast(lat, lon) {
 function generateListItem(location) {
     searchedCitiesArray = []
     searchedCitiesArray.push(location);
-    
-    for (i = 0; i < searchedCitiesArray.length; i++) {
-        var listItem = document.createElement("li");
-        listItem.textContent = searchedCitiesArray[i];
-        listItem.classList.add('listItems');
-        previousSearchedCitiesList.prepend(listItem);
+    localStorage.setItem('savedListItems', JSON.stringify(searchedCitiesArray));
+    if (location != "") {
+        for (i = 0; i < searchedCitiesArray.length; i++) {
+            var listItem = document.createElement("li");
+            listItem.textContent = searchedCitiesArray[i];
+            listItem.classList.add('listItems');
+            previousSearchedCitiesList.prepend(listItem);
+        }
+
+        $(".listItems").on("click", function () {
+            let location = this.textContent;
+            getCurrentWeather(location);
+        });
     }
 
-    $( ".listItems" ).on( "click", function() {
-        let location = this.textContent;
-        getCurrentWeather(location);
-      });
-} 
+}
 
 searchButton.addEventListener('click', () => {
     const inputValue = searchInput.value;
-    generateListItem(inputValue);
-    getCurrentWeather(inputValue);
+    console.log(inputValue)
+    if (inputValue != '') {
+        generateListItem(inputValue);
+        getCurrentWeather(inputValue);
+    } 
 });
 
-
-
-
+function generatePreviouslySavedListItems(items) {
+    
+        for (i = 0; i < items.length; i++) {
+            var listItem = document.createElement("li");
+            listItem.textContent = items[i];
+            listItem.classList.add('listItems');
+            previousSearchedCitiesList.prepend(listItem);
+        }
+}
+// if (savedListItems != null) {
+//     generatePreviouslySavedListItems(savedListItems);
+// }

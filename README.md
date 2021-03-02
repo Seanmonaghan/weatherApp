@@ -1,12 +1,12 @@
-# 06 Server-Side APIs: Weather Dashboard
+# Weather Dashboard
 
-## Your Task
+## Description
 
-Third-party APIs allow developers to access their data and functionality by making requests with specific parameters to a URL. Developers are often tasked with retrieving data from another application's API and using it in the context of their own. Your challenge is to build a weather dashboard that will run in the browser and feature dynamically updated HTML and CSS.
+This app utilizes third party APIs to gather information regarding the weather and date to provide the user a weather dashboard that they can see the current weather and a five day forecast, while also having their search queries saved in a list for easy access.  The app utilizes jQuery to dynamically update the HTML and CSS based on the city selection of the user.
 
-Use the [OpenWeather API](https://openweathermap.org/api) to retrieve weather data for cities. The documentation includes a section called "How to start" that provides basic setup and usage instructions. You will use `localStorage` to store any persistent data.
+The weather data obtained by this app comes from OpenWeather Api and the date information is generated using Luxon.js.  The saved list items will persist via local storage so that the user can leave and return and have their previously saved searches there when they get back.
 
-## User Story
+## Ideal User
 
 ```
 AS A traveler
